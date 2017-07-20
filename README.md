@@ -569,7 +569,7 @@ Save your changes and run your application again with `npm start`. You should ha
 
 #### Storage locations
 
-The website hosting location for this sample uses an S3 bucket as the CloudFront origin. The S3 bucket is by default configured as publicly accessable for testing purposes. To learn more about restricting this access further, see [Amazon S3 Security Considerations](http://docs.aws.amazon.com/mobile-hub/latest/developerguide/s3-security.html) and [Amazon CloudFront Security Considerations](http://alpha-docs-aws.amazon.com/mobile-hub/latest/developerguide/cloudfront-security.html).
+The website hosting location for this sample uses an S3 bucket as the CloudFront origin. The S3 bucket is by default configured as publicly accessable for testing purposes. To learn more about restricting this access further, see [Amazon S3 Security Considerations](http://docs.aws.amazon.com/mobile-hub/latest/developerguide/s3-security.html) and [Amazon CloudFront Security Considerations](http://docs.aws.amazon.com/mobile-hub/latest/developerguide/cloudfront-security.html).
 
 #### sessionStorage
 
@@ -577,4 +577,4 @@ This sample app uses [sessionStorage](https://developer.mozilla.org/en-US/docs/W
 
 #### API Handler Table Permissions
 
-The Lambda function in this sample will read and write to DynamoDB and it's role will be granted the appropriate permissions to perform such actions. If you wish to modify the sample to perform a more restricted set of actions see [Authentication and Access Control for Amazon DynamoDB](http://docs.aws.amazon.com/lambda/latest/dg/authentication-and-access-control.html).
+The Lambda function in this sample will read and write to DynamoDB and it's role will be granted the appropriate permissions to perform such actions. If you wish to modify the sample to perform a more restricted set of actions see [Authentication and Access Control for Amazon DynamoDB](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/authentication-and-access-control.html).
