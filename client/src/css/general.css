@@ -1,0 +1,56 @@
+.nav-bar {
+  background: #e47911;
+  margin-bottom: 20px;
+}
+
+.init-button {
+  margin-left: 5px;
+}
+
+.fill-in {
+  margin: 10% 0 3% 20%;
+  width: 45%;
+  display: inline-block;
+}
+
+.divider {
+  background: none;
+}
+
+.button-holder {
+  width:60%;
+  margin-left: 20%
+}
+
+.sample-app-enter {
+  opacity: 0.01;
+}
+.sample-app-enter.sample-app-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.sample-app-leave {
+  opacity: 1;
+}
+.sample-app-leave.sample-app-leave-active {
+  opacity: 0,01;
+  transition: opacity 300ms ease-in;
+}
+
+.sample-app-appear {
+  opacity: 0.01;
+}
+.sample-app-appear.sample-app-appear-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in
+}
+
+.content {
+  margin: 0 5% 2% 5%
+}
+.logo {
+  display: inline-block;
+}
+.content-button {
+  margin-bottom: 10px;
+}
