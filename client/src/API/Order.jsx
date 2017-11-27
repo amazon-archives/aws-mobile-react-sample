@@ -9,11 +9,7 @@ See the License for the specific language governing permissions and limitations 
 import React, { Component } from 'react';
 import { Label, List } from 'semantic-ui-react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import awsmobile from './../configuration/aws-exports';
-import restRequest from './restRequestClient';
-
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint
+import {API} from 'aws-amplify';
 
 export default class Order extends Component {
 
@@ -32,43 +28,34 @@ export default class Order extends Component {
         }
     }
 
-    fetch = () => {
-        let requestParams = {
-            method: 'GET',
-            url: endPoint + '/items/orders/' + sessionStorage.getItem('latestOrder')
-        }
-        this.restResponse = restRequest(requestParams)
-        .then(response => {
-            const quantity = response.menu_items[0].quantity;
-            this.setState({
-                orderId: response.id,
-                quantity: quantity,
-                itemId: response.menu_items[0].id
+    fetch = async () => {
+        API.get('ReactSample','/items/orders/' + sessionStorage.getItem('latestOrder'))
+            .then(response => {
+                const quantity = response.menu_items[0].quantity;
+                this.setState({
+                    orderId: response.id,
+                    quantity: quantity,
+                    itemId: response.menu_items[0].id
+                })
+                console.log(response);
             })
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     fetchOrderDetails() {
-        let requestParams = {
-            method: 'GET',
-            url: endPoint + '/items/restaurants/' + sessionStorage.getItem('currentRestaurantId') + '/menu/' + this.state.itemId
-        }
-
-        this.restResponse = restRequest(requestParams)
-        .then(response => {
-            this.setState({
-                menuItemName: response.name,
-                orderDecription: response.description,
+        API.get('ReactSample','/items/restaurants/' + sessionStorage.getItem('currentRestaurantId') + '/menu/' + this.state.itemId)
+            .then(response => {
+                this.setState({
+                    menuItemName: response.name,
+                    orderDecription: response.description,
+                })
+                console.log(response);
             })
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {

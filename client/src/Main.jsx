@@ -17,7 +17,7 @@ import { Button, Card, Row, Col, Navbar, NavItem } from 'react-materialize';
 import './css/general.css';
 import { Config, CognitoIdentityCredentials } from 'aws-sdk';
 import awsmobile from './configuration/aws-exports';
-import {handleSignOut} from './Auth/auth';
+import {Auth} from 'aws-amplify';
 
 export default class Main extends Component {
 
@@ -25,15 +25,18 @@ export default class Main extends Component {
         logOut: false
     }
 
-    signOut = (e) => {
+    signOut = async(e) => {
         e.preventDefault();
-        handleSignOut();
-
-        this.setState(() => {
-            return {
-                logOut: true
-            }
-        });
+        Auth.signOut()
+            .then(
+                sessionStorage.setItem('isLoggedIn', false),
+                this.setState(() => {
+                    return {
+                        logOut: true
+                    }
+                })
+            )
+            .catch(err => console.log(err));    
     }
 
     render() {

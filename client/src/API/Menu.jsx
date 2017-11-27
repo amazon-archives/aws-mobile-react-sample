@@ -10,12 +10,8 @@ import React, { Component } from 'react';
 import { Button, Table } from 'semantic-ui-react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import awsmobile from './../configuration/aws-exports';
-import restRequest from './restRequestClient';
+import {API} from 'aws-amplify';
 import './../css/general.css';
-
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint
-const apiOrderUri = endPoint + '/items/orders'
 
 export default class Menu extends Component{
 
@@ -27,50 +23,37 @@ export default class Menu extends Component{
         sessionStorage.getItem('currentRestaurantId') ? this.fetchMenuList() : false;
     }
 
-    fetchMenuList = () => {
-
-        let requestParams = {
-            method: 'GET',
-            url: endPoint + '/items/restaurants/' + sessionStorage.getItem('currentRestaurantId') + '/menu',
-        }
-        this.restResponse = restRequest(requestParams)
-        .then(data => {
-            console.log(data);
-            this.setState({
-                myTableData: data
-            });
-            return data;
-        })
-        .catch (function(error){
-            throw error;
-        });
+    fetchMenuList = async () => {
+        API.get('ReactSample','/items/restaurants/'+ sessionStorage.getItem('currentRestaurantId') + '/menu')
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    myTableData: data
+                });
+                return data;
+            })
+            .catch ( err => console.log(err))
     }
 
-    orderItem = (restaurantId,itemId) => {
-        let body = JSON.stringify({
-            'restaurant_id': restaurantId,
-            'menu_items': [{
-                'id':itemId,
-                'quantity': 1
-            }]
-        });
-
+    orderItem = async (restaurantId,itemId) => {
         let requestParams = {
-            method: 'POST',
-            url: apiOrderUri,
             headers: {'content-type': 'application/json'},
-            body
+            body : {
+                'restaurant_id': restaurantId,
+                'menu_items': [{
+                    'id':itemId,
+                    'quantity': 1
+                }]
+            }
         }
-
-        this.restResponse = restRequest(requestParams)
-        .then(data => {
-            sessionStorage.setItem('latestOrder', data.id);
-            console.log(data);
-            alert('Ordered successfully');
-        })
-        .catch (function(error){
-            console.log(error);
-        });
+        
+        API.post('ReactSample','/items/orders', requestParams)
+            .then(data => {
+                sessionStorage.setItem('latestOrder', data.id);
+                console.log(data);
+                alert('Ordered successfully');
+            })
+            .catch (err => console.log(err))
     }
 
     render() {

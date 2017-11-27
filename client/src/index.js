@@ -15,11 +15,15 @@ import Main from './Main';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Forget from './Auth/Forget';
-import {handleSignOut} from './Auth/auth';
 import awsmobile from './configuration/aws-exports';
+import Amplify,{Auth} from 'aws-amplify';
 import './css/general.css';
 
+Amplify.configure(awsmobile);
+
 require('file-loader?name=[name].[ext]!./index.html');
+require("babel-core/register");
+require("babel-polyfill");
 
 const PublicRoute = ({ component: Component, authStatus, ...rest}) => (
     <Route {...rest} render={props => authStatus == false
@@ -41,14 +45,18 @@ export default class AppRoute extends Component {
         this.handleWindowClose = this.handleWindowClose.bind(this);
     }
 
-    handleWindowClose = (e) => {
+    handleWindowClose = async (e) => {
         e.preventDefault();
-        handleSignOut();
-        this.setState(() => {
-            return {
-                authStatus: false
-            }
-        });
+        Auth.signOut()
+            .then(
+                sessionStorage.setItem('isLoggedIn', false),
+                this.setState(() => {
+                    return {
+                        authStatus: false
+                    }
+                })
+            )
+            .catch(err => console.log(err))
     }
 
     componentWillMount() {
@@ -61,7 +69,8 @@ export default class AppRoute extends Component {
     }
 
     validateUserSession() {
-        if(sessionStorage.getItem('isLoggedIn') === 'true'){
+        let checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
+        if(checkIfLoggedIn === 'true'){
             this.setState(() => {
                 return {
                     authStatus: true

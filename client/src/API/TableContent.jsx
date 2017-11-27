@@ -9,11 +9,6 @@ See the License for the specific language governing permissions and limitations 
 import React, { Component } from 'react';
 import { Table, Dimmer, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import awsmobile from './../configuration/aws-exports';
-
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint
-const apiResturantUri = endPoint + '/restaurants'
 
 export default class TableContent extends Component {
 

@@ -7,8 +7,6 @@ See the License for the specific language governing permissions and limitations 
 */
 
 import React, { Component } from 'react';
-import AWS, { Config, CognitoIdentityCredentials } from 'aws-sdk';
-import { CognitoUserPool, CognitoUserAttribute, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { Row, Icon } from 'react-materialize';
 import AppRoute from '../index';
 import { Segment, Button, Divider, Input, Form, Label, Modal, Image } from 'semantic-ui-react';
@@ -16,8 +14,7 @@ import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import '../css/general.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import awsmobile from '../configuration/aws-exports';
-import { loginCallbackFactory, handleSignIn, sendMFAVerificationCode } from './auth';
-
+import {Auth} from 'aws-amplify';
 export default class Login extends Component {
     state = {
         username: '',
@@ -31,33 +28,9 @@ export default class Login extends Component {
         modalOpen: false,
         invalidCodeMessage: '',
         enterMFA: false,
-        enableResend: false
+        enableResend: false,
+        cognitoUser: ''
     };
-
-    callbacks = loginCallbackFactory({
-        onSuccess(result) {
-            this.setState(() => {
-                return {
-                    logInStatus: result.logInStatus,
-                    verificationCode: result.verificationCode
-                }
-            });
-        },
-        onFailure(result) {
-            console.log(result.invalidCredentialsMessage);
-            this.setState(() => ({invalidCredentialsMessage: result.invalidCredentialsMessage}));
-        },
-        mfaRequired() {
-            if (!this.state.enableResend) {
-                this.setState(() => {
-                    enableResend: false
-                });
-                this.countDownResendVerificationCode();
-            }
-            this.setState(() => ({enterMFA: true}));
-            console.log('MFA required for login');
-        }
-    }, this);
 
     countDownResendVerificationCode = () => {
 
@@ -75,18 +48,37 @@ export default class Login extends Component {
         }, 1000);
     }
 
-    signInCustomer = (e) => {
+    signInCustomer = async (e) => {
         e.preventDefault();
         this.setState(() => {
             this.username = this.state.username,
             this.password = this.state.password
         });
-        handleSignIn(this.state.username, this.state.password, this.callbacks);
+       Auth.signIn(this.state.username, this.state.password)
+            .then(data => {
+                if (!this.state.enableResend) {
+                    this.setState(() => {
+                        enableResend: false
+                    });
+                    this.countDownResendVerificationCode();
+                }
+                this.setState(() => ({enterMFA: true, cognitoUser: data}))
+            })
+            .catch(err => console.log(err)); 
     }
 
-    sendVerificationCode = (e) => {
+    sendVerificationCode = async(e) => {
         e.preventDefault();
-        sendMFAVerificationCode(this.state.code, this.callbacks);
+        Auth.confirmSignIn(this.state.cognitoUser, this.state.code)
+            .then(
+                sessionStorage.setItem('isLoggedIn',true),
+                this.setState(() => {
+                    return {
+                        logInStatus: true
+                    }
+                })
+            )
+            .catch (err => console.log(err));   
     }
 
     render() {

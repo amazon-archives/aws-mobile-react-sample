@@ -14,14 +14,7 @@ import { Button, Image } from 'semantic-ui-react';
 import TableContent from './API/TableContent';
 import './css/general.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import awsmobile from './configuration/aws-exports';
-import aws4 from 'aws4';
-import restRequest from './API/restRequestClient'
-
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint;
-const apiRestarauntUri = endPoint + '/items/restaurants'
-const apiRestarauntInitUri = endPoint + '/items/init';
+import {API} from 'aws-amplify';
 
 export default class Home extends Component {
 
@@ -30,46 +23,34 @@ export default class Home extends Component {
         loading: null,
     }
 
-    fetch = () => {
+    fetch = async () => {
         this.setState(() => {
             return {
                 loading: true
             }
         });
-        let requestParams = {
-            method: 'GET',
-            url: apiRestarauntUri
-        }
-        this.restResponse = restRequest(requestParams)
-        .then(data => {
-            this.setState({
-                data,
-                loading: false
-            });
-        })
-        .catch (function(error){
-            console.log(error);
-        });
+
+        API.get('ReactSample','/items/restaurants')
+            .then(resp => {
+                this.setState({
+                    data: resp,
+                    loading: false
+                });
+            })
+            .catch (err => console.log(err))
     }
 
-    initRestaurant = () => {
+    initRestaurant = async () => {
 
-        let requestParams = {
-            method: 'POST',
-            url: apiRestarauntInitUri
-        }
-
-        this.restResponse = restRequest(requestParams)
-        .then(data => {
-            alert('Successfully inserted restaurants');
-            this.setState({
-                data: data,
-                loading: false
-            });
-        })
-        .catch (function(error){
-            console.log(error);
-        });
+        API.post('ReactSample','/items/init')
+            .then(data => {
+                alert('Successfully inserted restaurants');
+                this.setState({
+                    data: data,
+                    loading: false
+                });
+            })
+            .catch (err => console.log(err))
     }
 
     render() {

@@ -9,13 +9,11 @@ See the License for the specific language governing permissions and limitations 
 import React, { Component } from 'react';
 import { Row } from 'react-materialize';
 import { Button, Input, Form, Label, Icon, Modal, Header } from 'semantic-ui-react';
-import { Config, CognitoIdentityCredentials }  from 'aws-sdk';
 import { Redirect } from 'react-router-dom';
 import './../css/general.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import awsmobile from './../configuration/aws-exports';
-import {handleResendVerificationCode, handleSubmitVerificationCode, handleNewCustomerRegistration, checkRegistrationError } from './auth';
-
+import {Auth} from 'aws-amplify';
 export default class Register extends Component {
 
     state = {
@@ -36,52 +34,6 @@ export default class Register extends Component {
         enableResend: false
     };
 
-    callback = function(err, data) {
-        if(err) {
-            const displayError = checkRegistrationError(err);
-            console.log("Error: " + displayError.toString());
-            this.setState(() => {
-                return {
-                    invalidFormDataMessage: displayError
-                }
-            });
-            return;
-        }
-        this.setState(() => {
-            return {
-                enterAuth: true
-            }
-        })
-    }.bind(this);
-
-    verificationCallback = function(err, data) {
-        if(err) {
-            this.setState(() => {
-                return {
-                    invalidCodeMessage: 'Invalid Verification Code'
-                }
-            });
-            return;
-        }
-        this.setState(() => {
-            return {
-                authSuccess: true
-            }
-        })
-    }.bind(this);
-
-    resendCodeCallback = function(err, result) {
-        if (err) {
-            console.log();(err);
-            return;
-        }
-        this.setState(() => {
-            return {
-                enableResend: false,
-            }
-        });
-    }.bind(this);
-
     handleVerificationCodeChange = (e) => {
         e.preventDefault();
         const value = e.target.value;
@@ -93,21 +45,17 @@ export default class Register extends Component {
         });
     }
 
-      handleSubmit = (e) => {
+      handleSubmit = async (e) => {
           e.preventDefault();
 
           const username = this.state.username.trim();
           const password = this.state.password.trim();
           const passwordMatch = this.state.passwordMatch.trim();
 
-          const email = {
-              Name: 'email',
-              Value: this.state.email.trim()
-          }
-          const phone = {
-              Name: 'phone_number',
-              Value: this.state.phone.trim()
-          }
+          const email = this.state.email.trim();
+          
+          const phone = this.state.phone.trim();
+          
 
           const validUserNameMessage = !this.state.invalidUserNameMessage;
           const validPasswordMessage = !this.state.invalidPasswordMessage;
@@ -127,20 +75,54 @@ export default class Register extends Component {
              alert("Invalid registration details.")
              return;
          }
-         checkRegistrationForm && handleNewCustomerRegistration(username,password, email, phone, this.callback);
+         Auth.signUp(username,password,email,phone)
+             .then(
+                this.setState(() => {
+                    return {
+                        enterAuth: true
+                    }
+                })
+             )
+             .catch( err =>
+                console.log(err)
+             )
     }
 
-    handleSubmitVerification = (e) => {
+    handleSubmitVerification = async (e) => {
         e.preventDefault();
         const verificationCode = this.state.code;
         const username = this.state.username;
-        handleSubmitVerificationCode(username, verificationCode, this.verificationCallback);
+        Auth.confirmSignUp(username, verificationCode)
+            .then(
+                this.setState(() => {
+                    return {
+                        authSuccess: true
+                    }
+                })
+            )
+            .catch(
+                this.setState(() => {
+                    return {
+                        invalidCodeMessage: 'Invalid Verification Code'
+                    }
+                })
+            ) 
     }
 
-    resendVerificationCode = (e) => {
+    resendVerificationCode = async (e) => {
         e.preventDefault();
         const username = this.state.username;
-        handleResendVerificationCode(username, this.resendCodeCallback);
+        Auth.resendSignUp(username)
+            .then(
+                this.setState(() => {
+                    return {
+                        enableResend: false,
+                    }
+                })
+            )
+            .catch(
+                err => console.log(err)
+            )    
     }
 
     checkUsernameMatch = (username) => {

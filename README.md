@@ -172,7 +172,7 @@ npm run build
 
 ## Using the Registration and Login components in your application <a name="reglogin"></a>
 
-The Registration and Login components leverage Amazon Cognito User Pools and Amazon Cognito Federated Identities. As an example of using them in your own application first create a React application with [Create React App](https://github.com/facebookincubator/create-react-app):
+The Registration and Login components leverage AWS Amplify to make calls to Amazon Cognito User Pools and Amazon Cognito Federated Identities . As an example of using it in your own application first create a React application with [Create React App](https://github.com/facebookincubator/create-react-app):
 
 ```
 npm install -g create-react-app
@@ -209,7 +209,7 @@ return (
 Next, from your `./my-app` directory, run:
 
 ```
-$npm install --save aws-sdk amazon-cognito-identity-js react-router-dom react-materialize react-transition-group@^1.1.3 semantic-ui-react css-loader
+$npm install --save aws-amplify react-router-dom react-materialize react-transition-group@^1.1.3 semantic-ui-react css-loader
 ```
 
 Edit `Main.jsx and comment out the following:`
@@ -252,7 +252,7 @@ npm start
 The application should start and allow you to register users and login taking you to the normal page created with Create React App.
 
 
-### Using the REST Client helper to communicate with API Gateway <a name="restclient"></a>
+### Using AWS Amplify to communicate with API Gateway <a name="restclient"></a>
 
 The sample application uses API Gateway and Lambda to run an Express application which reads and writes to a DynamoDB table. Included in the sample is a helper function for making signed requests to API Gateway. We'll show how to use this helper for making unauthenticated requests to API Gateway below and you can use the Login example above to get authenticated credentials which this sample would use.
 
@@ -265,20 +265,19 @@ cd my-app/
 npm start
 ```
 
-Copy `restRequestClient.jsx` from `./aws-mobile-react-sample/client/src/API` to `./my-app/src`. If you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
+If you didn't do the previous section, copy `configuration` from `./aws-mobile-react-sample/client/src` to `./my-app/src`.
 
 Edit `./my-app/src/App.js` with the following imports at the top:
 
 ```
-import restRequest from './restRequestClient'
 import Link from 'link-react';
 import { Table } from 'semantic-ui-react';
 import awsmobile from './configuration/aws-exports';
-const cloud_logic_array = JSON.parse(awsmobile.aws_cloud_logic_custom)
-const endPoint = cloud_logic_array[0].endpoint
-const apiRestaurantUri = endPoint + "/items/restaurants";
-```
+import Amplify,{API} from 'aws-amplify';
 
+Amplify.configure(awsmobile);
+```
+** NOTE: To make calls to API Gateway through AWS Amplify, you need your IdentityPoolID in aws-exports.js. For further documentation, refer to [AWS Amplify](https://github.com/aws/aws-amplify/blob/master/media/api_guide.md) 
 Modify the `App` component like so **(NOTE: you are NOT modifying the render function YET)**:
 
 ```
@@ -286,21 +285,23 @@ class App extends Component {
   state = {
     data: []
   }
-  fetch = () => {
-    let requestParams = {
-      method: 'GET',
-      url: apiRestaurantUri
-    }
-    this.restResponse = restRequest(requestParams)
-      .then(resp => {
-          this.setState({
-            data: resp
-        });
+  fetch = async () => {
+    this.setState(() => {
+        return {
+            loading: true
+        }
+    });
 
-      })
-    .catch (function(error){
-      alert(error);
-  });
+    API.get('ReactSample','/items/restaurants')
+        .then(resp => {
+            this.setState({
+                data: resp
+            });
+            console.log("response is : ", resp);
+        }
+        )
+        .catch (err => console.log(err))
+  }
 }
 
 //render logic below
@@ -353,10 +354,10 @@ export default App;
 Save the file. Finally install the dependencies:
 
 ```
-npm install --save aws4 link-react axios semantic-ui-react
+npm install --save link-react semantic-ui-react
 ```
 
-Depending on if you want to do Authenticated or UnAuthenticated requests to API Gateway, you will need to do one of the following two modification:
+Depending on if you want to do Authenticated or UnAuthenticated requests to API Gateway, you will need the following modification:
 
 **Authenticated Requests**
 
@@ -411,7 +412,7 @@ Finally, after making your modifications for either the Authenticated or UnAuthe
 npm start
 ```
 
-Click **List restaurants** at the top of the page to invoke the REST client.
+Click **List restaurants** at the top of the page to use the AWS Amplify API component.
 
 
 ## Modifying Express routes in Lambda <a name="lambdamodify"></a>

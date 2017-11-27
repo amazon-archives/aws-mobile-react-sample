@@ -10,9 +10,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Input, Form, Label } from 'semantic-ui-react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 import awsmobile from '../configuration/aws-exports';
-import {forgotPasswordFactoryCallback, handleForgotPassword, handleForgotPasswordReset} from './auth';
+import {Auth} from 'aws-amplify';
 
 export default class Forget extends Component {
 
@@ -33,38 +32,6 @@ export default class Forget extends Component {
         invalidCodeOrPasswordMessage: ''
     }
 
-    forgotPasswordCallBack = forgotPasswordFactoryCallback({
-        onSuccess: () => {
-            this.setState(() => {
-                return {
-                    resetSuccess: true
-                }
-            });
-        },
-        onFailure: (err) => {
-            this.setState(() => ({invalidCodeOrPasswordMessage: err.invalidCodeOrPasswordMessage}));
-        },
-        inputVerificationCode: (data) => {
-            if (this.state.enableSend) {
-                this.setState(() => {
-                    return {
-                        enableSend: false
-                    }
-                });
-                this.countDownResendVerificationCode();
-            }
-            if (this.state.enableResend) {
-                this.setState(() => {
-                    return {
-                        enableResend: false
-                    }
-                })
-                this.countDownResendVerificationCode();
-            }
-            this.setState({ enterReset: true});
-        }
-    }, this);
-
     handlePasswordMatchChange = (e) => {
         e.preventDefault();
         const value = e.target.value;
@@ -82,7 +49,7 @@ export default class Forget extends Component {
         return password === passwordMatch;
     }
 
-    sendVerificationCode = (e) => {
+    sendVerificationCode = async (e) => {
         e.preventDefault();
         const username = this.state.username;
         if (!username) {
@@ -92,7 +59,27 @@ export default class Forget extends Component {
                 }
             })
         }
-        handleForgotPassword(username, this.forgotPasswordCallBack);
+        Auth.forgotPassword(username)
+            .then(data => {
+                if (this.state.enableSend) {
+                    this.setState(() => {
+                        return {
+                            enableSend: false
+                        }
+                    });
+                    this.countDownResendVerificationCode();
+                }
+                if (this.state.enableResend) {
+                    this.setState(() => {
+                        return {
+                            enableResend: false
+                        }
+                    })
+                    this.countDownResendVerificationCode();
+                }
+                this.setState({ enterReset: true});
+            })
+            .catch(err => console.log(err));
     }
 
     resendVerificationCode = (e) => {
@@ -127,7 +114,7 @@ export default class Forget extends Component {
         });
     }
 
-    handlePasswordReset = (e) => {
+    handlePasswordReset = async (e) => {
         e.preventDefault();
         const message = this.state.invalidPasswordMessage;
         if (message) {
@@ -136,7 +123,15 @@ export default class Forget extends Component {
         const username = this.state.username;
         const verificationCode = this.state.code;
         const newPassword = this.state.password;
-        handleForgotPasswordReset(username, verificationCode, newPassword, this.forgotPasswordCallBack);
+        Auth.forgotPasswordSubmit(username, verificationCode, newPassword)
+            .then(
+                this.setState(() => {
+                    return {
+                        resetSuccess: true
+                    }
+                })
+            )
+            .catch(err => console.log(err))
     }
 
     countDownResendVerificationCode = () => {
