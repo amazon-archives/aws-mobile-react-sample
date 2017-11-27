@@ -1,4 +1,4 @@
-# AWS Mobile React Sample App
+# AWS Mobile React Starter Kit
 
 Bootstrap a React application on AWS. This sample automatically provisions a Serverless infrastructure with authentication, authorization, website hosting, API access and database operations. It also includes user registration and MFA support. The sample use case is a "Restaurant" ordering system where after a user registers and logs in they can view different restaurant menus, select items and place orders.
 
@@ -43,7 +43,7 @@ First clone this repo:
   1. Set up your AWS resources using AWS Mobile Hub by clicking the button below:
 
   <p align="center">
-  <a target="_blank" href="https://console.aws.amazon.com/mobilehub/home?#/?config=https://github.com/awslabs/aws-mobile-react-sample/blob/master/backend/import_mobilehub/react-sample.zip">
+  <a target="_blank" href="https://console.aws.amazon.com/mobilehub/home?#/starterkit/?config=https://github.com/awslabs/aws-mobile-react-sample/blob/master/backend/import_mobilehub/react-sample.zip">
   <span>
       <img height="100%" src="https://s3.amazonaws.com/deploytomh/button-deploy-aws-mh.png"/>
   </span>
