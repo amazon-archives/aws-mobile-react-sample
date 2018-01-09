@@ -9,7 +9,7 @@ See the License for the specific language governing permissions and limitations 
 import React, { Component } from 'react';
 import { Button, Table } from 'semantic-ui-react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import awsmobile from './../configuration/aws-exports';
+import awsmobile from './../aws-exports';
 import {API} from 'aws-amplify';
 import './../css/general.css';
 

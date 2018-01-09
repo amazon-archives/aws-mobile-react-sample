@@ -16,7 +16,7 @@ import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Button, Card, Row, Col, Navbar, NavItem } from 'react-materialize';
 import './css/general.css';
 import { Config, CognitoIdentityCredentials } from 'aws-sdk';
-import awsmobile from './configuration/aws-exports';
+import awsmobile from './aws-exports';
 import {Auth} from 'aws-amplify';
 
 export default class Main extends Component {
