@@ -15,7 +15,7 @@ import Main from './Main';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Forget from './Auth/Forget';
-import awsmobile from './configuration/aws-exports';
+import awsmobile from './aws-exports';
 import Amplify,{Auth} from 'aws-amplify';
 import './css/general.css';
 

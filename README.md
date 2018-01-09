@@ -61,25 +61,48 @@ First clone this repo:
 
 1. Before proceeding further, in the Mobile Hub console click the **Cloud Logic** tile and ensure that the API deployment status at the bottom shows **CREATE_COMPLETE** (_this can take a few moments_).
 
-2. Click **Configure** on the left hand bar of the console and select the **Hosting and Streaming tile**.
+2. Install the AWS Mobile CLI and initialize the project (from the root project folder's **client** directory):
+  
+  ```
+    $ npm install -g awsmobile-cli
+    $ cd client/
+    $ awsmobile init your-unique-mobile-hub-project-id
+  ```
 
+Choose `src` as your source directory, and `build` as your build (the defaults). This will download and initialize your local project with your AWS Mobile backend as well as download the aws-exports.js file to your client/src directory.
 
-3. At the bottom of the page click **Download aws-exports.js file**. Copy this file into the `./aws-mobile-react-sample/client/src/configuration` folder of the repo you cloned.
+  * _Alternatively using the Mobile Hub Console_:
+
+You can also download the aws-exports.js file and place it in `client/src/aws-exports.js` by clicking **Configure** on the left hand bar of the Mobile Hub console and selecting the **Hosting and Streaming tile**. Then, at the bottom of the page click **Download aws-exports.js file**. Copy this file into the `./aws-mobile-react-sample/client/src/` folder of the repo you cloned.
 
    * _Alternatively using the AWS CLI_:
 
      ```
-     $ cd ../aws-mobile-react-sample/client/src/configuration
+     $ cd ../aws-mobile-react-sample/client/src/
      $ aws s3api list-buckets --query 'Buckets[?starts_with(Name,`reactsample-hosting`)].Name' |grep reactsample |tr -d '"'
      $ aws s3api get-object --bucket <YOUR_BUCKET_NAME> --key aws-exports.js ./aws-exports.js
      ```
 
-5. Navigate into  `./aws-mobile-react-sample/client`  and run:
+## Run the app
 
-   ```
-   $ npm install
-   $ npm start
-   ```
+Navigate into  `./aws-mobile-react-sample/client`  and run:
+  
+  ```
+    $ awsmobile run
+  ```
+
+To publish your application to Amazon S3 and Amazon CloudFront:
+
+  ```
+    $ awsmobile publish
+  ```
+  
+  * _Alternatively using NPM_:
+
+  ```
+    $ npm install
+    $ npm start
+  ```
 
  Done!
 
