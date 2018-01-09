@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Input, Form, Label } from 'semantic-ui-react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import awsmobile from '../configuration/aws-exports';
+import awsmobile from '../aws-exports';
 import {Auth} from 'aws-amplify';
 
 export default class Forget extends Component {

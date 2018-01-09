@@ -61,25 +61,48 @@ First clone this repo:
 
 1. Before proceeding further, in the Mobile Hub console click the **Cloud Logic** tile and ensure that the API deployment status at the bottom shows **CREATE_COMPLETE** (_this can take a few moments_).
 
-2. Click **Configure** on the left hand bar of the console and select the **Hosting and Streaming tile**.
+2. Install the AWS Mobile CLI and initialize the project (from the root project folder's **client** directory):
+  
+  ```
+    $ npm install -g awsmobile-cli
+    $ cd client/
+    $ awsmobile init your-unique-mobile-hub-project-id
+  ```
 
+Choose `src` as your source directory, and `build` as your build (the defaults). This will download and initialize your local project with your AWS Mobile backend as well as download the aws-exports.js file to your client/src directory.
 
-3. At the bottom of the page click **Download aws-exports.js file**. Copy this file into the `./aws-mobile-react-sample/client/src/configuration` folder of the repo you cloned.
+  * _Alternatively using the Mobile Hub Console_:
+
+You can also download the aws-exports.js file and place it in `client/src/aws-exports.js` by clicking **Configure** on the left hand bar of the Mobile Hub console and selecting the **Hosting and Streaming tile**. Then, at the bottom of the page click **Download aws-exports.js file**. Copy this file into the `./aws-mobile-react-sample/client/src/` folder of the repo you cloned.
 
    * _Alternatively using the AWS CLI_:
 
      ```
-     $ cd ../aws-mobile-react-sample/client/src/configuration
+     $ cd ../aws-mobile-react-sample/client/src/
      $ aws s3api list-buckets --query 'Buckets[?starts_with(Name,`reactsample-hosting`)].Name' |grep reactsample |tr -d '"'
      $ aws s3api get-object --bucket <YOUR_BUCKET_NAME> --key aws-exports.js ./aws-exports.js
      ```
 
-5. Navigate into  `./aws-mobile-react-sample/client`  and run:
+## Run the app
 
-   ```
-   $ npm install
-   $ npm start
-   ```
+Navigate into  `./aws-mobile-react-sample/client`  and run:
+  
+  ```
+    $ awsmobile run
+  ```
+
+To publish your application to Amazon S3 and Amazon CloudFront:
+
+  ```
+    $ awsmobile publish
+  ```
+
+  * _Alternatively using NPM_:
+
+  ```
+    $ npm install
+    $ npm start
+  ```
 
  Done!
 
@@ -118,15 +141,9 @@ The following steps outline how you can build and deploy the application using t
 
   1. Navigate to `./aws-mobile-react-sample/client` and build for production by running:
 
-      `npm run build`
+      `$ awsmobile publish`
 
-  2. Copy everything within the produced `./aws-mobile-react-sample/client/build` directory to the S3 bucket that was created earlier. You can do this one of two ways:
-
-  - Via the Mobile Hub console select the **Hosting and Streaming** section of your project, click **Manage Files** at the bottom which will open the S3 console. Click **Upload** and then **Add files** selecting everything inside the `./aws-mobile-react-sample/client/build` directory. Press **Upload**.
-
-  - Via the AWS CLI, find the S3 bucket name (listed in your aws-exports.js file as **aws_content_delivery_bucket** and use it in the following command: `aws s3 cp --recursive ./aws-mobile-react-sample/client/build s3://BUCKET_NAME`
-
-  3. To view your website, in the Mobile Hub console select the **Hosting and Streaming** section and click the **View from S3** to see your page immediately or **View from CloudFront** to see using a CDN (_note: this might be immediate or take up to an hour_).
+  This will automatically run the `npm run-script build` command, upload your application to Amazon S3 and Amazon CloudFront, and open your default web browser to the Amazon S3 static web hosting page.
 
 ### Automating Build & Deploy
 
@@ -166,7 +183,7 @@ npm install --save webpack-s3-plugin
 4. Run the following command to build and deploy to S3:
 
 ```
-npm run build
+$ awsmobile publish
 ```
 
 

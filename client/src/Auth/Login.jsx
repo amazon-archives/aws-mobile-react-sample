@@ -13,7 +13,7 @@ import { Segment, Button, Divider, Input, Form, Label, Modal, Image } from 'sema
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import '../css/general.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import awsmobile from '../configuration/aws-exports';
+import awsmobile from '../aws-exports';
 import {Auth} from 'aws-amplify';
 export default class Login extends Component {
     state = {
