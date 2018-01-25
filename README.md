@@ -57,8 +57,6 @@ First clone this repo:
 
 ## Client Setup
 
-![Alt Text](/media/console.gif)
-
 1. Before proceeding further, in the Mobile Hub console click the **Cloud Logic** tile and ensure that the API deployment status at the bottom shows **CREATE_COMPLETE** (_this can take a few moments_).
 
 2. Install the AWS Mobile CLI and initialize the project (from the root project folder's **client** directory):
@@ -68,6 +66,9 @@ First clone this repo:
     $ cd client/
     $ awsmobile init your-unique-mobile-hub-project-id
   ```
+
+ NOTE: Your unique mobile hub project ID can be retrieved from the url from the Mobile Hub console:
+ https://console.aws.amazon.com/mobilehub/home?region=us-east-1#/**YOUR-UNIQUE-PROJECT-ID-IS-HERE**/build
 
 Choose `src` as your source directory, and `build` as your build (the defaults). This will download and initialize your local project with your AWS Mobile backend as well as download the aws-exports.js file to your client/src directory.
 
