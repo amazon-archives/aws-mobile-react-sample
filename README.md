@@ -209,14 +209,15 @@ return (
   <div>
     {
       !logOut && (
-      <BrowserRouter>
-      <div>
-        <Navbar className='nav-bar' brand='WebApp' right>
-          <NavItem onClick={this.signOut}>Logout</NavItem>
-        </Navbar>
-        <App/>
-      </div>
-    </BrowserRouter>)
+        <BrowserRouter>
+          <div>
+            <Navbar className='nav-bar' brand='WebApp' right>
+              <NavItem onClick={this.signOut}>Logout</NavItem>
+            </Navbar>
+            <App/>
+          </div>
+        </BrowserRouter>
+      )
     }
     {
       logOut && (<AppRoute authStatus={false}/>)
