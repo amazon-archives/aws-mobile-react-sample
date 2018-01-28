@@ -289,7 +289,7 @@ If you didn't do the previous section, copy `configuration` from `./aws-mobile-r
 
 Edit `./my-app/src/App.js` with the following imports at the top:
 
-```
+```js
 import Link from 'link-react';
 import { Table } from 'semantic-ui-react';
 import awsmobile from './configuration/aws-exports';
@@ -545,32 +545,32 @@ Alternatively you could click the Lambda function resource in the Mobile Hub con
 5. In the `./aws-mobile-react-sample/client/src` directory edit `Home.jsx` with the following code **BEFORE** the **render()** method:
 
 ```js
-  newRestaurant = () => {
-    let body = JSON.stringify({
-      'name': 'New Name',
-      'description': 'New description',
-      'address': 'New address',
-      'phone': 'New phone',
-      'rating': 'New rating'
-    });
+newRestaurant = () => {
+  let body = JSON.stringify({
+    'name': 'New Name',
+    'description': 'New description',
+    'address': 'New address',
+    'phone': 'New phone',
+    'rating': 'New rating'
+  });
 
-    let requestParams = {
-      method: 'POST',
-      url: apiRestarauntUri + '/new',
-      headers: {'content-type': 'application/json'},
-      body
-    }
-
-    this.restResponse = restRequest(requestParams)
-      .then(data => {
-        sessionStorage.setItem('latestOrder', data.id);
-        console.log(data);
-        alert('Added successfully');
-      })
-      .catch (function(error){
-        console.log(error);
-      });
+  let requestParams = {
+    method: 'POST',
+    url: apiRestarauntUri + '/new',
+    headers: {'content-type': 'application/json'},
+    body
   }
+
+  this.restResponse = restRequest(requestParams)
+    .then(data => {
+      sessionStorage.setItem('latestOrder', data.id);
+      console.log(data);
+      alert('Added successfully');
+    })
+    .catch (function(error){
+      console.log(error);
+    });
+}
 ```
 
 Note that `url: apiRestarauntUri + '/new'` matches the path you made for the Express route in the Lambda function you uploaded.
