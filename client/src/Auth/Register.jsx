@@ -53,9 +53,9 @@ export default class Register extends Component {
           const passwordMatch = this.state.passwordMatch.trim();
 
           const email = this.state.email.trim();
-          
+
           const phone = this.state.phone.trim();
-          
+
 
           const validUserNameMessage = !this.state.invalidUserNameMessage;
           const validPasswordMessage = !this.state.invalidPasswordMessage;
@@ -106,7 +106,7 @@ export default class Register extends Component {
                         invalidCodeMessage: 'Invalid Verification Code'
                     }
                 })
-            ) 
+            )
     }
 
     resendVerificationCode = async (e) => {
@@ -122,7 +122,7 @@ export default class Register extends Component {
             )
             .catch(
                 err => console.log(err)
-            )    
+            )
     }
 
     checkUsernameMatch = (username) => {
@@ -138,7 +138,7 @@ export default class Register extends Component {
     }
 
     checkPhonePattern = (phone) => {
-        return /\+1[0-9]{3}[0-9]{3}[0-9]{4}$/.test(phone);
+        return /^\+?[1-9]\d{1,14}$/.test(phone);
     }
 
     countDownResendVerificationCode = () => {
