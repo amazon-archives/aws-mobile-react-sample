@@ -60,7 +60,7 @@ First clone this repo:
 1. Before proceeding further, in the Mobile Hub console click the **Cloud Logic** tile and ensure that the API deployment status at the bottom shows **CREATE_COMPLETE** (_this can take a few moments_).
 
 2. Install the AWS Mobile CLI and initialize the project (from the root project folder's **client** directory):
-  
+
   ```
     $ npm install -g awsmobile-cli
     $ cd client/
@@ -87,7 +87,7 @@ You can also download the aws-exports.js file and place it in `client/src/aws-ex
 ## Run the app
 
 Navigate into  `./aws-mobile-react-sample/client`  and run:
-  
+
   ```
     $ awsmobile run
   ```
@@ -131,7 +131,7 @@ To publish your application to Amazon S3 and Amazon CloudFront:
 
   9. Press **Orders** in the navigation bar. You will see some information immediately from local storage and other information returned asynchronously from a call to API Gateway.
 
-  * _The navigation bar is optimized to work across desktop and mobile browsers. It will show either at the top of the page or in a collapsible bar on the left for mobile form factors_  
+  * _The navigation bar is optimized to work across desktop and mobile browsers. It will show either at the top of the page or in a collapsible bar on the left for mobile form factors_
 
   10. Select **Logout** in the navigation bar to return the user to the home page.
 
@@ -152,25 +152,25 @@ If you are using a CI/CD process you may choose to automate this process. The fo
 
 1. Navigate to `./aws-mobile-react-sample/client/` directory and edit webpack.config.js file. Add the following to the top of the file:
 
-  ```
+  ```js
   const S3Plugin = require('webpack-s3-plugin');
   ```
 
 2. Add the following as an entry to the `plugins:[]` section towards the bottom:
 
-```
+```js
 new S3Plugin({
-      // Only upload css and js
-      include: /.*\.(css|js)/,
-      // s3Options are required
-      s3Options: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY,
-      },
-      s3UploadOptions: {
-        Bucket: 'MyBucket'
-      }
-    })
+  // Only upload css and js
+  include: /.*\.(css|js)/,
+  // s3Options are required
+  s3Options: {
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  },
+  s3UploadOptions: {
+    Bucket: 'MyBucket'
+  }
+})
 ```
 
 **NOTE:** Replace the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `MyBucket` with appropriate values such as your account keys for automation and the S3 bucket created during the import process.
@@ -204,26 +204,26 @@ npm start
 If the application runs successfully, copy the `Auth`, `configuration` and `css` folders from `./aws-mobile-react-sample/client/src` to `./my-app/src` that was created by Create React App. Next copy `index.js` and `Main.jsx` from `./aws-mobile-react-sample/client/src` to `./my-app/src`. Edit the copied `Main.jsx` so that the `return()` function matches the below code:
 
 
-```
+```jsx
 return (
-      <div>
-        {
-          !logOut && (
-          <BrowserRouter>
+  <div>
+    {
+      !logOut && (
+        <BrowserRouter>
           <div>
             <Navbar className='nav-bar' brand='WebApp' right>
               <NavItem onClick={this.signOut}>Logout</NavItem>
             </Navbar>
             <App/>
           </div>
-        </BrowserRouter>)
-        }
-        {
-          logOut && (<AppRoute authStatus={false}/>)
-        }
-      </div>
-    );
-
+        </BrowserRouter>
+      )
+    }
+    {
+      logOut && (<AppRoute authStatus={false}/>)
+    }
+  </div>
+);
 ```
 
 Next, from your `./my-app` directory, run:
@@ -234,7 +234,7 @@ $npm install --save aws-amplify react-router-dom react-materialize react-transit
 
 Edit `Main.jsx and comment out the following:`
 
-```
+```js
 //import Home from './Home';
 //import Menu from './API/Menu';
 //import Orders from './API/Order';
@@ -244,13 +244,13 @@ Also add `import App from './App';` to the top of `Main.jsx` and save the file.
 
 Edit `index.js` and replace the `require('file-loader....')` statement towards the top with:
 
-```
+```js
 require('file-loader?name=[name].[ext]./index.html');
 ```
 
 Finally to add the styling to the page edit `./my-app/public/index.html` and add the following to the head:
 
-```
+```html
 <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
@@ -258,7 +258,7 @@ Finally to add the styling to the page edit `./my-app/public/index.html` and add
 
 And add the following to the body:
 
-```
+```html
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 ```
@@ -289,7 +289,7 @@ If you didn't do the previous section, copy `configuration` from `./aws-mobile-r
 
 Edit `./my-app/src/App.js` with the following imports at the top:
 
-```
+```js
 import Link from 'link-react';
 import { Table } from 'semantic-ui-react';
 import awsmobile from './configuration/aws-exports';
@@ -297,29 +297,29 @@ import Amplify,{API} from 'aws-amplify';
 
 Amplify.configure(awsmobile);
 ```
-** NOTE: To make calls to API Gateway through AWS Amplify, you need your IdentityPoolID in aws-exports.js. For further documentation, refer to [AWS Amplify](https://github.com/aws/aws-amplify/blob/master/media/api_guide.md) 
+** NOTE: To make calls to API Gateway through AWS Amplify, you need your IdentityPoolID in aws-exports.js. For further documentation, refer to [AWS Amplify](https://github.com/aws/aws-amplify/blob/master/media/api_guide.md)
 Modify the `App` component like so **(NOTE: you are NOT modifying the render function YET)**:
 
-```
+```jsx
 class App extends Component {
   state = {
     data: []
   }
+
   fetch = async () => {
     this.setState(() => {
-        return {
-            loading: true
-        }
+      return {
+        loading: true
+      }
     });
 
     API.get('ReactSample','/items/restaurants')
         .then(resp => {
-            this.setState({
-                data: resp
-            });
-            console.log("response is : ", resp);
-        }
-        )
+          this.setState({
+            data: resp
+          });
+          console.log("response is : ", resp);
+        })
         .catch (err => console.log(err))
   }
 }
@@ -330,7 +330,7 @@ render()....more code
 
 Now, change the `render()` function like so:
 
-```
+```jsx
 render() {
     return (
       <div className="App">
@@ -389,13 +389,13 @@ npm install --save querystring-browser@^1.0.4
 
 Next you will need to configure this as a webpack alias:
 
-```
+```js
 resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: {
-      querystring: 'querystring-browser'
-    }
+  extensions: ['.js', '.jsx'],
+  alias: {
+    querystring: 'querystring-browser'
   }
+}
 ```
 
 For our Create React App sample you will need to modify either `webpack.config.dev.js` or `webpack.config.prod.js` in the `./my-app/node_modules/react-scripts/config` directory. Look for the `resolve:` field inside `module.exports` and add the `querystring: 'querystring-browser'` entry under the `alias` field.
@@ -410,7 +410,7 @@ Next deploy your changes by select **Actions** at the top of the page, then **De
 
 Additionally you will need to make an alteration to the `./my-app/src/App.js` by changing the `this.setState()` function from:
 
-```
+```js
 this.setState({
   data: resp
 });
@@ -418,7 +418,7 @@ this.setState({
 
 To:
 
-```
+```js
 this.setState({
   data: resp.data
 });
@@ -441,7 +441,7 @@ The sample application invokes a Lambda function running Express which will make
 
 1. Add the following function into app.js before the section that says  `* Restaurant methods *`
 
-```
+```js
 var putCallback = function(err, data) {
     if (err) {
         console.log(err)
@@ -504,7 +504,7 @@ function createMenu(restaurant_id) {
 
 2. Now in the routes section (under the ` * Restaurant methods *` comment) add in a new POST route:
 
-```
+```js
 app.post('/items/restaurants/new', function(req, res){
     var restaurant = {}
     restaurant.id = uuid.v1()
@@ -522,7 +522,7 @@ app.post('/items/restaurants/new', function(req, res){
         }else {
             res.json({
                 message: "New Restaurant added!"
-            })   
+            })
         }
     })
     createMenu(restaurant.id)
@@ -544,40 +544,40 @@ Alternatively you could click the Lambda function resource in the Mobile Hub con
 
 5. In the `./aws-mobile-react-sample/client/src` directory edit `Home.jsx` with the following code **BEFORE** the **render()** method:
 
-```
-  newRestaurant = () => {
-    let body = JSON.stringify({
-      'name': 'New Name',
-      'description': 'New description',
-      'address': 'New address',
-      'phone': 'New phone',
-      'rating': 'New rating'
-    });
+```js
+newRestaurant = () => {
+  let body = JSON.stringify({
+    'name': 'New Name',
+    'description': 'New description',
+    'address': 'New address',
+    'phone': 'New phone',
+    'rating': 'New rating'
+  });
 
-    let requestParams = {
-      method: 'POST',
-      url: apiRestarauntUri + '/new',
-      headers: {'content-type': 'application/json'},
-      body
-    }
-
-    this.restResponse = restRequest(requestParams)
-      .then(data => {
-        sessionStorage.setItem('latestOrder', data.id);
-        console.log(data);
-        alert('Added successfully');
-      })
-      .catch (function(error){
-        console.log(error);
-      });
+  let requestParams = {
+    method: 'POST',
+    url: apiRestarauntUri + '/new',
+    headers: {'content-type': 'application/json'},
+    body
   }
+
+  this.restResponse = restRequest(requestParams)
+    .then(data => {
+      sessionStorage.setItem('latestOrder', data.id);
+      console.log(data);
+      alert('Added successfully');
+    })
+    .catch (function(error){
+      console.log(error);
+    });
+}
 ```
 
 Note that `url: apiRestarauntUri + '/new'` matches the path you made for the Express route in the Lambda function you uploaded.
 
 6. In the `return` statement of the `render` method add in a new button next to the others:
 
-```
+```jsx
 <Button primary onClick={this.newRestaurant}>
   New Restaurant
 </Button>
