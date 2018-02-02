@@ -33,7 +33,7 @@
   opacity: 1;
 }
 .sample-app-leave.sample-app-leave-active {
-  opacity: 0,01;
+  opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
 
