@@ -40,7 +40,7 @@ AWS Services used:
 
 1. Create your backend resources and download the sample code inside of my-project folder.
     ```
-    $ awsmobile start my-project react-native
+    $ awsmobile start my-project react
     ```
 
 
