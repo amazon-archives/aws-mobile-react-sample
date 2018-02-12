@@ -47,7 +47,7 @@ AWS Services used:
 2. Finally run the app:
 
     ```
-    $ cd my-project/client
+    $ cd my-project
     $ awsmobile run
     ```
 
