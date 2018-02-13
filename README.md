@@ -32,65 +32,28 @@ AWS Services used:
 
 + [NodeJS](https://nodejs.org/en/download/) with [NPM](https://docs.npmjs.com/getting-started/installing-node)
 
-+ [AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
++ [AWS Mobile CLI](https://github.com/aws/awsmobile-cli)
+  - `npm install -g awsmobile-cli`
 
 
-## Getting started <a name="getstarted"></a>
+## Getting Started <a name="getstarted"></a>
 
-First clone this repo:
-`git clone https://github.com/awslabs/aws-mobile-react-sample`
-
-## Backend Setup
-
-  1. Set up your AWS resources using AWS Mobile Hub by clicking the button below:
-
-  <p align="center">
-  <a target="_blank" href="https://console.aws.amazon.com/mobilehub/home?#/starterkit/?config=https://github.com/awslabs/aws-mobile-react-sample/blob/master/backend/import_mobilehub/react-sample.zip&app=web">
-  <span>
-      <img height="100%" src="https://s3.amazonaws.com/deploytomh/button-deploy-aws-mh.png"/>
-  </span>
-  </a>
-  </p>
-
-  2. Press **Import project**.
+1. Create your backend resources and download the sample code inside of my-project folder.
+    ```
+    $ awsmobile start my-project react
+    ```
 
 
-## Client Setup
+2. Finally run the app:
 
-1. Before proceeding further, in the Mobile Hub console click the **Cloud Logic** tile and ensure that the API deployment status at the bottom shows **CREATE_COMPLETE** (_this can take a few moments_).
-
-2. Install the AWS Mobile CLI and initialize the project (from the root project folder's **client** directory):
-
-  ```
-    $ npm install -g awsmobile-cli
-    $ cd client/
-    $ awsmobile init your-unique-mobile-hub-project-id
-  ```
-
- NOTE: Your unique mobile hub project ID can be retrieved from the url from the Mobile Hub console:
- https://console.aws.amazon.com/mobilehub/home?region=us-east-1#/**YOUR-UNIQUE-PROJECT-ID-IS-HERE**/build
-
-Choose `src` as your source directory, and `build` as your build (the defaults). This will download and initialize your local project with your AWS Mobile backend as well as download the aws-exports.js file to your client/src directory.
-
-  * _Alternatively using the Mobile Hub Console_:
-
-You can also download the aws-exports.js file and place it in `client/src/aws-exports.js` by clicking **Configure** on the left hand bar of the Mobile Hub console and selecting the **Hosting and Streaming tile**. Then, at the bottom of the page click **Download aws-exports.js file**. Copy this file into the `./aws-mobile-react-sample/client/src/` folder of the repo you cloned.
-
-   * _Alternatively using the AWS CLI_:
-
-     ```
-     $ cd ../aws-mobile-react-sample/client/src/
-     $ aws s3api list-buckets --query 'Buckets[?starts_with(Name,`reactsample-hosting`)].Name' |grep reactsample |tr -d '"'
-     $ aws s3api get-object --bucket <YOUR_BUCKET_NAME> --key aws-exports.js ./aws-exports.js
-     ```
-
-## Run the app
-
-Navigate into  `./aws-mobile-react-sample/client`  and run:
-
-  ```
+    ```
+    $ cd my-project
     $ awsmobile run
-  ```
+    ```
+
+ Done!
+
+## Publish the app
 
 To publish your application to Amazon S3 and Amazon CloudFront:
 
