@@ -10,42 +10,34 @@ import React, { Component } from 'react';
 import Home from './Home';
 import Menu from './API/Menu';
 import Orders from './API/Order';
-import Login from './Auth/Login';
 import AppRoute from './index';
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { Button, Card, Row, Col, Navbar, NavItem } from 'react-materialize';
 import './css/general.css';
-import { Config, CognitoIdentityCredentials } from 'aws-sdk';
 import awsmobile from './aws-exports';
 import {Auth} from 'aws-amplify';
 
 export default class Main extends Component {
 
-    state = {
-        logOut: false
+    constructor(props)  {
+        super(props);
     }
 
     signOut = async(e) => {
         e.preventDefault();
         Auth.signOut()
             .then(
-                sessionStorage.setItem('isLoggedIn', false),
-                this.setState(() => {
-                    return {
-                        logOut: true
-                    }
-                })
+                this.props.history.replace('/'),
+                window.location.reload()
             )
             .catch(err => console.log(err));    
     }
 
     render() {
-        const { logOut } = this.state;
         return (
             <div>
                 {
-                    !logOut && (
-                    <BrowserRouter>
+                    (<BrowserRouter>
                         <div>
                             <Navbar className='nav-bar' brand='WebApp' right>
                                 <NavItem><Link to="/main/home">Home</Link></NavItem>
@@ -66,9 +58,6 @@ export default class Main extends Component {
                             </Switch>
                         </div>
                     </BrowserRouter>)
-                }
-                {
-                    logOut && (<AppRoute authStatus={false}/>)
                 }
             </div>
         );
