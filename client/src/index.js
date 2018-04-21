@@ -28,9 +28,9 @@ const MainRoute = ({ component: Component, ...rest}) => (
 )
 
 const federated = {
-    google_client_id: '503978479551-2dcdvm02ae6901g02to7j4d1g37jmlcq.apps.googleusercontent.com',
-    facebook_app_id: '2',
-    amazon_client_id: 'amzn1.application.df9258f39cc54be7a9ff65db331c4475'
+    google_client_id: 'yourGoogleClientID',
+    facebook_app_id: 'yourFacebookClientID',
+    amazon_client_id: 'yourAmazonClientID'
 };
 
 class App extends Component {
