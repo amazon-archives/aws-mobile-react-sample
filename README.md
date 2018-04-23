@@ -72,6 +72,14 @@ To publish your application to Amazon S3 and Amazon CloudFront:
 
  Done!
 
+ ## Enabling federated sign-in
+
+Federated sign-in controls for Google, Facebook and Amazon are provided in the user interface by default; however, the client ids for these providers are not valid.  Dummy values are provided in the 'federated' object within index.js so that the user interface controls appear.  You can remove any of the controls by deleting the appropriate keys from the 'federated' object.
+
+In order to enable federated sign-in using these providers, please check the documentation: `https://aws.github.io/aws-amplify/media/federated_identity_setup`.
+
+You may also remove federated sign-in entirely by removing the 'federated={federated}' statement from the ReactDOM.render call in index.js. 
+
 ## Application walkthrough
 
 ![Alt Text](/media/Mainpage.PNG)

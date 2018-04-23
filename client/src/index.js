@@ -59,6 +59,7 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <MainRoute path='/' exact component={Main} />
+                    <MainRoute path='/main' component={Main} />
                 </Switch>
             </BrowserRouter>
         );
