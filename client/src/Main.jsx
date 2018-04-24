@@ -51,7 +51,7 @@ export default class Main extends Component {
                                 <h4>Welcome to the order system!</h4>
                             </div>
                             <Switch>
-                                <Route exact path="/main" component={Home} />
+                                <Route path="/" component={Home} />
                                 <Route exact path="/main/home" component={Home} />
                                 <Route exact path="/main/menus/:id" component={Menu} />
                                 <Route exact path="/main/menus" component={Menu} />

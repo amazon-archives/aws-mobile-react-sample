@@ -14,9 +14,8 @@ import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import Main from './Main';
 import awsmobile from './aws-exports';
 import Amplify from 'aws-amplify';
-import { Authenticator } from 'aws-amplify-react';
+import { Authenticator, Greetings } from 'aws-amplify-react';
 import './css/general.css';
-import { Greetings } from 'aws-amplify-react/dist/Auth';
 
 Amplify.configure(awsmobile);
 
@@ -24,9 +23,6 @@ require('file-loader?name=[name].[ext]!./index.html');
 require("babel-core/register");
 require("babel-polyfill");
 
-// const MainRoute = ({ component: Component, ...rest}) => (
-//     <Route {...rest} render={props => ( <Component {...props} /> )} />
-// )
 
 const federated = {
     google_client_id: 'yourGoogleClientID',
