@@ -14,8 +14,9 @@ import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import Main from './Main';
 import awsmobile from './aws-exports';
 import Amplify from 'aws-amplify';
-import { withAuthenticator } from 'aws-amplify-react';
+import { Authenticator } from 'aws-amplify-react';
 import './css/general.css';
+import { Greetings } from 'aws-amplify-react/dist/Auth';
 
 Amplify.configure(awsmobile);
 
@@ -23,9 +24,9 @@ require('file-loader?name=[name].[ext]!./index.html');
 require("babel-core/register");
 require("babel-polyfill");
 
-const MainRoute = ({ component: Component, ...rest}) => (
-    <Route {...rest} render={props => ( <Component {...props} /> )} />
-)
+// const MainRoute = ({ component: Component, ...rest}) => (
+//     <Route {...rest} render={props => ( <Component {...props} /> )} />
+// )
 
 const federated = {
     google_client_id: 'yourGoogleClientID',
@@ -56,16 +57,11 @@ class App extends Component {
 
     render() {
         return (
-            <BrowserRouter>
-                <Switch>
-                    <MainRoute path='/' exact component={Main} />
-                    <MainRoute path='/main' component={Main} />
-                </Switch>
-            </BrowserRouter>
+            <Authenticator hide={[Greetings]} federated={federated}>
+                <Main  />
+            </Authenticator>
         );
     }
 }
 
-const AppWithAuth = withAuthenticator(App)
-
-ReactDOM.render(<AppWithAuth federated={federated}/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));

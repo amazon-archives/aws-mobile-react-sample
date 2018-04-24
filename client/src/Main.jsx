@@ -16,6 +16,7 @@ import { Button, Card, Row, Col, Navbar, NavItem } from 'react-materialize';
 import './css/general.css';
 import awsmobile from './aws-exports';
 import {Auth} from 'aws-amplify';
+import { Authenticator } from 'aws-amplify-react/dist/Auth';
 
 export default class Main extends Component {
 
@@ -27,8 +28,7 @@ export default class Main extends Component {
         e.preventDefault();
         Auth.signOut()
             .then(
-                this.props.history.replace('/'),
-                window.location.reload()
+                console.log('signedOut')
             )
             .catch(err => console.log(err));    
     }
@@ -36,7 +36,7 @@ export default class Main extends Component {
     render() {
         return (
             <div>
-                {
+                { this.props.authState == 'signedIn' ?
                     (<BrowserRouter>
                         <div>
                             <Navbar className='nav-bar' brand='WebApp' right>
@@ -45,6 +45,7 @@ export default class Main extends Component {
                                 <NavItem><Link to="/main/orders">Orders</Link></NavItem>
                                 <NavItem onClick={this.signOut}>Logout</NavItem>
                             </Navbar>
+           
                             <div className="content">
                                 <h2>Serverless Restaurants App</h2>
                                 <h4>Welcome to the order system!</h4>
@@ -57,7 +58,7 @@ export default class Main extends Component {
                                 <Route exact path="/main/orders" component={Orders} />
                             </Switch>
                         </div>
-                    </BrowserRouter>)
+                    </BrowserRouter>) : null
                 }
             </div>
         );
