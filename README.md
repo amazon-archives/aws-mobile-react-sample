@@ -82,13 +82,15 @@ You may also remove federated sign-in entirely by removing the 'federated={feder
 
 ## Using the default Greetings Component
 
-This application is using a custom nav with it's own logout buttong.  However, the **Authenticator** component can provide a default **Greetings** component which displays the username and a login/logout button.  You can enable this by removing the **Greetings** element from the **Authenticator's 'hide' array** in index.js. 
+This application is using a custom nav with it's own logout button.  However, the **Authenticator** component can provide a default **Greetings** component which displays the username and a login/logout button.  You can enable this by removing the **Greetings** element from the **Authenticator's 'hide' array** in index.js. 
 
 ## Application walkthrough
 
 ![Alt Text](/media/Mainpage.PNG)
 
-  1. Open a browser to `http://localhost:8080` and view the **Authenticator** component. Choose **Sign Up Now** and type in a username, password, email address and phone number. Alternatively, you can enable federated sign-in, select the provider, and skip to step 5.
+  1. Open a browser to `http://localhost:8080` and view the **Authenticator** component. Choose **Sign Up Now** and type in a username, password, email address and phone number. 
+  
+  Alternatively, if you have enabled federated sign-in you can select the provider and skip to step 5.
 
   2. You should recieve a 6-digit verification code via SMS. Type this into the screen and select **Validate**.
 
