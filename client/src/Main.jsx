@@ -16,7 +16,6 @@ import { Button, Card, Row, Col, Navbar, NavItem } from 'react-materialize';
 import './css/general.css';
 import awsmobile from './aws-exports';
 import {Auth} from 'aws-amplify';
-import { Authenticator } from 'aws-amplify-react/dist/Auth';
 
 export default class Main extends Component {
 
