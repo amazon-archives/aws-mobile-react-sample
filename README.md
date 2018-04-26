@@ -76,9 +76,36 @@ To publish your application to Amazon S3 and Amazon CloudFront:
 
 Federated sign-in controls for Google, Facebook and Amazon are provided in the user interface by default; however, the client ids for these providers are not valid.  Dummy values are provided in the **federated** object within index.js so that the user interface controls appear.  You can remove any of the controls by deleting the appropriate keys from the **federated** object.
 
-In order to enable federated sign-in using these providers, please [check the documentation](https://aws.github.io/aws-amplify/media/federated_identity_setup).
-
 You may also remove federated sign-in entirely by removing the 'federated={federated}' statement from the ReactDOM.render call in index.js. 
+
+Enabling federated sign-in is a three step process:
+
+  1.  Register your application with the provider(s).  
+
+      The identify providers will request information about your application, and will supply you with an application ID and other keys that your application(s) will use for authentication.  Keep in mind that some providers may supply separate application IDs for multiple applications even when these applications are sharing AWS resources. 
+
+  2.  Enable the provider for your application.
+
+      There are multiple ways of enabling a federated identity provider for your application.
+
+      *The AWS Mobile CLI* provides commands for enabling providers.
+
+      ```
+      $ awsmobile user-signin enable
+      $ awsmobile user-signin configure
+
+      <follow prompts>
+
+      $awsmobile push
+      ```
+
+      *AWS Mobile Hub* allows you to register an identity provider by accessing the User Sign-In section and selecting the provider under the Add sign-in Providers section.
+
+      *The AWS Cognito and IAM Consoles* allow you to register identity providers as well.  Please see the respective documentation for these services.
+
+  3.  Once you have registered your application with your federated identity provider(s) and have enabled federated identity for your application, make sure to include your client ids in the ```federated``` object in index.js.
+
+Links to additional information about federated identity providers [may be found here](https://aws.github.io/aws-amplify/media/federated_identity_setup).
 
 ## Using the default Greetings Component
 
