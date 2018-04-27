@@ -74,7 +74,7 @@ To publish your application to Amazon S3 and Amazon CloudFront:
 
  ## Enabling federated sign-in
 
-Federated sign-in controls for Google, Facebook and Amazon are provided in the user interface by default; however, the client ids for these providers are not valid.  Dummy values are provided in the **federated** object within index.js so that the user interface controls appear.  You can remove any of the controls by deleting the appropriate keys from the **federated** object.
+Federated sign-in controls for Google, Facebook and Amazon are provided in the user interface by default; however, the client ids for these providers are not valid.  Dummy values are provided in the ```federated``` object within index.js so that the user interface controls appear.  You can remove any of the controls by deleting the appropriate keys from the ```federated``` object.
 
 You may also remove federated sign-in entirely by removing the 'federated={federated}' statement from the ReactDOM.render call in index.js. 
 
@@ -94,12 +94,23 @@ Enabling federated sign-in is a three step process:
       $ awsmobile user-signin enable
       $ awsmobile user-signin configure
 
-      <follow prompts>
+      If you select Facebook:
+      ? Facebook App ID xxxxxxx
+
+      If you select Google:
+      ? Google Web App Client ID xxxxxxx
+      ? Google Android Client ID xxxxxxx
+      ? Google iOS Client ID xxxxxxx
+
 
       $awsmobile push
       ```
 
+---
+
       *AWS Mobile Hub* allows you to register an identity provider by accessing the User Sign-In section and selecting the provider under the Add sign-in Providers section.
+
+---
 
       *The AWS Cognito and IAM Consoles* allow you to register identity providers as well.  Please see the respective documentation for these services.
 
