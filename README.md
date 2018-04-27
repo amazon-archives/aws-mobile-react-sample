@@ -82,7 +82,7 @@ Enabling federated sign-in is a three step process:
 
   1.  Register your application with the provider(s).  
 
-      The identify providers will request information about your application, and will supply you with an application ID and other keys that your application(s) will use for authentication.  Keep in mind that some providers may supply separate application IDs for multiple applications even when these applications are sharing AWS resources. 
+      The identity providers will request information about your application, and will supply you with an application ID and other keys that your application(s) will use for authentication.  Keep in mind that some providers may supply separate application IDs for multiple applications even when these applications are sharing AWS resources. 
 
   2.  Enable the provider for your application.
 
