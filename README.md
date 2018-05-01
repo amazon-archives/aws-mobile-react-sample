@@ -108,11 +108,11 @@ Enabling federated sign-in is a three step process:
 
 ---
 
-      *AWS Mobile Hub* allows you to register an identity provider by accessing the User Sign-In section and selecting the provider under the Add sign-in Providers section.
+      AWS Mobile Hub allows you to register an identity provider by accessing the User Sign-In section and selecting the provider under the Add sign-in Providers section.
 
 ---
 
-      *The AWS Cognito and IAM Consoles* allow you to register identity providers as well.  Please see the respective documentation for these services.
+      The AWS Cognito and IAM Consoles allow you to register identity providers as well.  Please see the respective documentation for these services.
 
   3.  Once you have registered your application with your federated identity provider(s) and have enabled federated identity for your application, make sure to include your client ids in the ```federated``` object in index.js.
 
