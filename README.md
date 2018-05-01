@@ -72,11 +72,63 @@ To publish your application to Amazon S3 and Amazon CloudFront:
 
  Done!
 
+ ## Enabling federated sign-in
+
+Federated sign-in controls for Google, Facebook and Amazon are provided in the user interface by default; however, the client ids for these providers are not valid.  Dummy values are provided in the ```federated``` object within index.js so that the user interface controls appear.  You can remove any of the controls by deleting the appropriate keys from the ```federated``` object.
+
+You may also remove federated sign-in entirely by removing the 'federated={federated}' statement from the ReactDOM.render call in index.js. 
+
+Enabling federated sign-in is a three step process:
+
+  1.  Register your application with the provider(s).  
+
+      The identity providers will request information about your application, and will supply you with an application ID and other keys that your application(s) will use for authentication.  Keep in mind that some providers may supply separate application IDs for multiple applications even when these applications are sharing AWS resources. 
+
+  2.  Enable the provider for your application.
+
+      There are multiple ways of enabling a federated identity provider for your application.
+
+      *The AWS Mobile CLI* provides commands for enabling providers.
+
+      ```
+      $ awsmobile user-signin enable
+      $ awsmobile user-signin configure
+
+      If you select Facebook:
+      ? Facebook App ID xxxxxxx
+
+      If you select Google:
+      ? Google Web App Client ID xxxxxxx
+      ? Google Android Client ID xxxxxxx
+      ? Google iOS Client ID xxxxxxx
+
+
+      $awsmobile push
+      ```
+
+---
+
+      *AWS Mobile Hub* allows you to register an identity provider by accessing the User Sign-In section and selecting the provider under the Add sign-in Providers section.
+
+---
+
+      *The AWS Cognito and IAM Consoles* allow you to register identity providers as well.  Please see the respective documentation for these services.
+
+  3.  Once you have registered your application with your federated identity provider(s) and have enabled federated identity for your application, make sure to include your client ids in the ```federated``` object in index.js.
+
+Links to additional information about federated identity providers [may be found here](https://aws.github.io/aws-amplify/media/federated_identity_setup).
+
+## Using the default Greetings Component
+
+This application is using a custom nav with it's own logout button.  However, the **Authenticator** component can provide a default **Greetings** component which displays the username and a login/logout button.  You can enable this by removing the **Greetings** element from the **Authenticator's 'hide' array** in index.js. 
+
 ## Application walkthrough
 
 ![Alt Text](/media/Mainpage.PNG)
 
-  1. Open a browser to `http://localhost:8080` and view the sample. Choose **Sign Up Now** and type in a username, password, email address and phone number.
+  1. Open a browser to `http://localhost:8080` and view the **Authenticator** component. Choose **Sign Up Now** and type in a username, password, email address and phone number. 
+  
+  Alternatively, if you have enabled federated sign-in you can select the provider and skip to step 5.
 
   2. You should recieve a 6-digit verification code via SMS. Type this into the screen and select **Validate**.
 
