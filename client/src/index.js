@@ -12,11 +12,9 @@ import { BrowserRouter, Route, Redirect, Link, Switch } from 'react-router-dom';
 import { Button, Card, Row, Col, Navbar, NavItem, Icon } from 'react-materialize';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import Main from './Main';
-import Login from './Auth/Login';
-import Register from './Auth/Register';
-import Forget from './Auth/Forget';
 import awsmobile from './aws-exports';
-import Amplify,{Auth} from 'aws-amplify';
+import Amplify from 'aws-amplify';
+import { Authenticator, Greetings } from 'aws-amplify-react';
 import './css/general.css';
 
 Amplify.configure(awsmobile);
@@ -25,42 +23,27 @@ require('file-loader?name=[name].[ext]!./index.html');
 require("babel-core/register");
 require("babel-polyfill");
 
-const PublicRoute = ({ component: Component, authStatus, ...rest}) => (
-    <Route {...rest} render={props => authStatus == false
-        ? ( <Component {...props} /> ) : (<Redirect to="/main" />)
-    } />
-)
 
-const PrivateRoute = ({ component: Component, authStatus, ...rest}) => (
-    <Route {...rest} render={props => authStatus == false
-        ? ( <Redirect to="/login" /> ) : ( <Component {...props} /> )
-    } />
-)
+const federated = {
+    google_client_id: 'yourGoogleClientID',
+    facebook_app_id: 'yourFacebookClientID',
+    amazon_client_id: 'yourAmazonClientID'
+};
 
-export default class AppRoute extends Component {
+class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {authStatus: this.props.authStatus || false}
-        this.handleWindowClose = this.handleWindowClose.bind(this);
     }
 
     handleWindowClose = async (e) => {
         e.preventDefault();
         Auth.signOut()
-            .then(
-                sessionStorage.setItem('isLoggedIn', false),
-                this.setState(() => {
-                    return {
-                        authStatus: false
-                    }
-                })
-            )
+            .then()
             .catch(err => console.log(err))
     }
 
     componentWillMount() {
-        this.validateUserSession();
         window.addEventListener('beforeunload', this.handleWindowClose);
     }
 
@@ -68,37 +51,13 @@ export default class AppRoute extends Component {
         window.removeEventListener('beforeunload', this.handleWindowClose);
     }
 
-    validateUserSession() {
-        let checkIfLoggedIn = sessionStorage.getItem('isLoggedIn');
-        if(checkIfLoggedIn === 'true'){
-            this.setState(() => {
-                return {
-                    authStatus: true
-                }
-            })
-        } else {
-            this.setState(() => {
-                return {
-                    authStatus: false
-                }
-            })
-        }
-    }
-
     render() {
         return (
-            <BrowserRouter>
-                <Switch>
-                    <PublicRoute authStatus={this.state.authStatus} path='/' exact component={Login} />
-                    <PublicRoute authStatus={this.state.authStatus} path='/login' exact component={Login} />
-                    <PublicRoute authStatus={this.state.authStatus} path='/register' exact component={Register} />
-                    <PublicRoute authStatus={this.state.authStatus} path='/forget' exact component={Forget} />
-                    <PrivateRoute authStatus={this.state.authStatus} path='/main' component={Main} />
-                    <Route render={() => (<Redirect to="/login" />)} />
-                </Switch>
-            </BrowserRouter>
+            <Authenticator hide={[Greetings]} federated={federated}>
+                <Main  />
+            </Authenticator>
         );
     }
 }
 
-ReactDOM.render(<AppRoute />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
