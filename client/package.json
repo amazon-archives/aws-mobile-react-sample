@@ -33,7 +33,6 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^1.16.0",
     "aws-amplify": "^0.4.0",
     "aws-amplify-react": "^0.1.43",
     "aws-api-gateway-client": "^0.2.7",
