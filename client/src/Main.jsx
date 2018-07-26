@@ -26,9 +26,10 @@ export default class Main extends Component {
     signOut = async(e) => {
         e.preventDefault();
         Auth.signOut()
-            .then(
+            .then(() => {
+                this.props.onStateChange('signedOut', null);
                 console.log('signedOut')
-            )
+            })
             .catch(err => console.log(err));    
     }
 
