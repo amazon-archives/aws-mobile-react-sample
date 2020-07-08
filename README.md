@@ -1,6 +1,6 @@
 # AWS Mobile React Starter Kit
 
-**Please submit issues to the [aws-amplify](https://github.com/aws/aws-amplify/issues) repository.**
+**This sample application has been archived in favor of [Amplify JS Samples](https://github.com/aws-amplify/amplify-js-samples). While the archived repository will still work, please go +1 this feature request for [AWS Mobile React Starter Kit sample](https://github.com/aws-amplify/amplify-js-samples/issues/15) if you are looking to use this sample.**
 
 Bootstrap a React application on AWS. This sample automatically provisions a Serverless infrastructure with authentication, authorization, website hosting, API access and database operations. It also includes user registration and MFA support. The sample use case is a "Restaurant" ordering system where after a user registers and logs in they can view different restaurant menus, select items and place orders.
 
